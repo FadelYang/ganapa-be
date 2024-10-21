@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  username  String?
+  orders    Order[]
+  cartItems CartItem[]
+}
+
+model Product {
+  id                Int             @id @default(autoincrement())
+  name              String
+  description       String          @db.Text
+  price             Decimal
+  stock             Int
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+  productCategoryId Int
+  orderItems        OrderItem[]
+  cartItems         CartItem[]
+}
+
+model ProductCategory {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  totalAmount Decimal
+  status      String
+  orderItems  OrderItem[]
+  user        User?       @relation(fields: [userId], references: [id])
+  userId      Int?
+  payments    Payment[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  user      User?   @relation(fields: [userId], references: [id])
+  userId    Int?
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model Payment {
+  id        Int      @id @default(autoincrement())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   Int
+  method    String
+  amount    Decimal
+  status    String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+}
