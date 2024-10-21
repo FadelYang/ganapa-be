@@ -17,7 +17,7 @@ model User {
   id        Int        @id @default(autoincrement())
   email     String     @unique
   password  String
-  name  String?
+  name      String?
   orders    Order[]
   cartItems CartItem[]
 }
@@ -36,7 +36,7 @@ model Product {
 
 model ProductCategory {
   id       Int       @id @default(autoincrement())
-  name     String
+  name     String    @unique
   products Product[]
 }
 
