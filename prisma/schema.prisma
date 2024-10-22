@@ -68,6 +68,8 @@ model CartItem {
   product   Product @relation(fields: [productId], references: [id])
   productId Int
   qunatity  Int     @default(1)
+
+  @@unique([userId, productId])
 }
 
 model Payment {
