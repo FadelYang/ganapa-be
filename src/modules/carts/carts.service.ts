@@ -17,7 +17,6 @@ export class CartService {
                     }
                 }
             })
-            console.log(existingCartItem);
             
             if (existingCartItem) {
                 return await this.prisma.cartItem.update({
@@ -37,7 +36,6 @@ export class CartService {
             if (error.code === 'P2003') {
                 throw new NotFoundException('Product not found')
             }
-
         }
     }
 
@@ -51,6 +49,26 @@ export class CartService {
             })
         } catch (error) {
             throw new HttpException('Unable to retrieve cart', 500)
+        }
+    }
+
+    async deleteCartItem(cartItemId: number): Promise<string> {
+        try {
+            const cartItem = await this.prisma.cartItem.findFirstOrThrow({
+                where: { id: cartItemId }
+            })
+
+            await this.prisma.cartItem.delete({
+                where: { id: cartItemId }
+            })
+
+            return `Success delete cart item`
+        } catch (error) {
+            if (error.code === 'P2025') {
+                throw new NotFoundException('Cart Item Not Found')
+            }
+
+            throw new HttpException('Unable to delete cart item', 500)
         }
     }
 }
