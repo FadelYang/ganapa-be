@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request } from "@nestjs/common";
+import { Body, Controller, Get, Post, Request } from "@nestjs/common";
 import { AddItemToCartDto } from "./dto/add-item-to-cart.dto";
 import { CartService } from "./carts.service";
 import { CartItem } from "@prisma/client";
@@ -15,5 +15,13 @@ export class CartController {
     ): Promise<CartItem> {
         addItemToCartDto.userId = req.user.sub
         return this.cartService.addItemToCart(addItemToCartDto)
+    }
+
+    @Get()
+    getUserCart(
+        @Request() req: ExpressRequestWithUser
+    ): Promise<CartItem[]> {
+        const userId = +req.user.sub
+        return this.cartService.getUserCart(+userId)
     }
 }

@@ -38,7 +38,19 @@ export class CartService {
                 throw new NotFoundException('Product not found')
             }
 
-            throw new HttpException('somtehing wrong', error)
+        }
+    }
+
+    async getUserCart(userId: number): Promise<CartItem[]> {
+        try {
+            return await this.prisma.cartItem.findMany({
+                where: { userId },
+                include: {
+                    product: true
+                }
+            })
+        } catch (error) {
+            throw new HttpException('Unable to retrieve cart', 500)
         }
     }
 }
