@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/auth.guard';
 import { ProductCategoryModule } from './modules/productCategories/product-category.module';
 import { ProductModule } from './modules/products/products.module';
+import { CartModule } from './modules/carts/carts.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ProductModule } from './modules/products/products.module';
     UsersModule,
     ProductCategoryModule,
     ProductModule,
+    CartModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
