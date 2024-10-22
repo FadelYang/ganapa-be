@@ -21,7 +21,7 @@ export class ProductCategoryService {
             return newProductCategory
         } catch (error) {
             if (error.code === 'P2002') {
-                throw new ConflictException('Category already exists')
+                throw new ConflictException('Product category already exists')
             }
         }
     }

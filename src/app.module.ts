@@ -7,12 +7,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/auth.guard';
 import { ProductCategoryModule } from './modules/productCategories/product-category.module';
+import { ProductModule } from './modules/products/products.module';
 
 @Module({
   imports: [
     CoreModule,
     UsersModule,
     ProductCategoryModule,
+    ProductModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
