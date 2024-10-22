@@ -2,6 +2,7 @@ import { HttpException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/core/services/prisma.service";
 import { AddItemToCartDto } from "./dto/add-item-to-cart.dto";
 import { CartItem } from "@prisma/client";
+import { UpdateCartItemDto } from "./dto/update-cart-item.dto";
 
 @Injectable()
 export class CartService {
@@ -17,7 +18,7 @@ export class CartService {
                     }
                 }
             })
-            
+
             if (existingCartItem) {
                 return await this.prisma.cartItem.update({
                     where: { id: existingCartItem.id },
@@ -51,6 +52,30 @@ export class CartService {
             throw new HttpException('Unable to retrieve cart', 500)
         }
     }
+    async updateCartItemQuantity(cartItemId: number, change: number): Promise<CartItem> {
+        try {
+            const cartItem = await this.prisma.cartItem.findUniqueOrThrow({
+                where: { id: cartItemId }
+            });
+    
+            const newItemQuantity = cartItem.quantity + change;
+    
+            if (newItemQuantity < 1) {
+                throw new HttpException('Quantity cannot be less than 1', 400);
+            }
+    
+            return await this.prisma.cartItem.update({
+                where: { id: cartItemId },
+                data: { quantity: newItemQuantity }
+            });
+        } catch (error) {
+            if (error) {
+                return error
+            }
+            throw new HttpException('Unable to update cart item quantity', 500);
+        }
+    }
+    
 
     async deleteCartItem(cartItemId: number): Promise<string> {
         try {

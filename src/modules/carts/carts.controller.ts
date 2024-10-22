@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Request, UseGuards } from "@nestjs/common";
 import { AddItemToCartDto } from "./dto/add-item-to-cart.dto";
 import { CartService } from "./carts.service";
 import { CartItem } from "@prisma/client";
@@ -24,6 +24,15 @@ export class CartController {
     ): Promise<CartItem[]> {
         const userId = +req.user.sub
         return this.cartService.getUserCart(+userId)
+    }
+
+    @Patch(':id')
+    @UseGuards(IsMineGuard)
+    updateCartItemQuantity(
+        @Param('id') cartItemId: number,
+        @Body('change', ParseIntPipe) change: number
+    ): Promise<CartItem> {
+        return this.cartService.updateCartItemQuantity(+cartItemId, change);
     }
 
     @Delete(':id')
