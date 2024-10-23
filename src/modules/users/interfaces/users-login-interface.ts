@@ -8,5 +8,6 @@ export interface UserPayload {
 }
 
 export interface LoginResponse {
-    access_token: string
+    access_token: string,
+    role: UserRole
 }

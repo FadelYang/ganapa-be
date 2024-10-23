@@ -63,7 +63,8 @@ export class UserService {
             }
 
             return {
-                access_token: await this.jwtService.signAsync(payload)
+                access_token: await this.jwtService.signAsync(payload),
+                role: user.role
             }
         } catch (error) {
             throw new HttpException(error, error.status);
