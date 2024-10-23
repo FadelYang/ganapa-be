@@ -9,6 +9,7 @@ import { AuthGuard } from './common/auth.guard';
 import { ProductCategoryModule } from './modules/productCategories/product-category.module';
 import { ProductModule } from './modules/products/products.module';
 import { CartModule } from './modules/carts/carts.module';
+import { RolesGuard } from './common/roles.guard';
 
 @Module({
   imports: [
@@ -29,6 +30,10 @@ import { CartModule } from './modules/carts/carts.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
     }
   ],
   
