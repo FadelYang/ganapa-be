@@ -58,7 +58,8 @@ export class UserService {
             const payload: UserPayload = {
                 sub: user.id,
                 email: user.email,
-                name: user.name
+                name: user.name,
+                role: user.role
             }
 
             return {
