@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Request, UseGuards } from "@nestjs/common";
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import { Public } from "src/common/decorators/public.decorator";
 import { IsMineGuard } from "src/common/is-mine.guard";
 import { UserService } from "src/modules/users/users.services";
@@ -8,6 +8,7 @@ import { LoginUserDto } from "src/modules/users/dtos/login-user.dto";
 import { UpdateUserDto } from "src/modules/users/dtos/update-user.dto";
 import { ExpressRequestWithUser } from "src/modules/users/interfaces/express-request-with-user.interface";
 import { LoginResponse, UserPayload } from "src/modules/users/interfaces/users-login-interface";
+import { Roles } from "src/common/decorators/roles-decorator";
 
 @Controller('users')
 export class UsersController {
@@ -43,5 +44,11 @@ export class UsersController {
     @UseGuards(IsMineGuard)
     async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<string> {
         return this.userService.deleteUser(+id)
+    }
+
+    @Get('admin')
+    @Roles(UserRole.ADMIN)
+    getAdminContent() {
+        return `Hello ADMIN`
     }
 }
