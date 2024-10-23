@@ -10,13 +10,14 @@ import { UpdateProductDto } from "./dtos/update-product.dto";
 export class ProductService {
     constructor(private prisma: PrismaService) { }
 
-    async createProduct(createProductDto: CreateProductDto): Promise<Product> {
-        const { productCategoryId, ...rest } = createProductDto
+    async createProduct(createProductDto: CreateProductDto, imagePath?: string): Promise<Product> {
+        const { productCategoryId, image, ...rest } = createProductDto
         
         try {
             const newProduct = await this.prisma.product.create({
                 data: {
                     ...rest,
+                    image: imagePath || image,
                     productCategory: {
                         connect: {
                             id: createProductDto.productCategoryId
