@@ -1,5 +1,5 @@
 import { ConflictException, HttpException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common"
-import { User } from '@prisma/client'
+import { User, UserRole } from '@prisma/client'
 import { CreateUserDto } from "src/modules/users/dtos/create-user.dto"
 import { compare, hash } from "bcrypt"
 import { JwtService } from "@nestjs/jwt"
@@ -22,7 +22,8 @@ export class UserService {
                 data: {
                     email: createUserDto.email,
                     password: await hash(createUserDto.password, 10),
-                    name: createUserDto.name
+                    name: createUserDto.name,
+                    role: createUserDto.role || UserRole.USER
                 }
             })
 
