@@ -10,6 +10,8 @@ import { ProductCategoryModule } from './modules/productCategories/product-categ
 import { ProductModule } from './modules/products/products.module';
 import { CartModule } from './modules/carts/carts.module';
 import { RolesGuard } from './common/roles.guard';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -22,8 +24,14 @@ import { RolesGuard } from './common/roles.guard';
       global: true,
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '12h' }
-    })
+    }),
+    ServeStaticModule.forRoot({
+        rootPath: join(__dirname, '..', 'uploads'), // Path to your upload folder
+        serveRoot: '/uploads', // URL path for accessing images
+      },
+    ),
   ],
+
   controllers: [AppController],
   providers: [
     AppService,
@@ -36,6 +44,6 @@ import { RolesGuard } from './common/roles.guard';
       useClass: RolesGuard
     }
   ],
-  
+
 })
-export class AppModule {}
+export class AppModule { }
