@@ -63,11 +63,25 @@ export class ProductService {
 
 
     async getAllProducts(query?: QueryPaginationDto): Promise<PaginateOutput<Product>> {
+        const { search } = query
+
+        const where: any = search
+        ? {
+            OR: [
+              { name: { contains: search, mode: 'insensitive' } },
+              { description: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {}
+
         const [products, total] = await Promise.all([
             await this.prisma.product.findMany({
-                ...paginate(query)
+                ...paginate(query),
+                where,
             }),
-            await this.prisma.product.count()
+            await this.prisma.product.count({
+                where
+            })
         ])
 
         return paginateOutput<Product>(products, total, query)

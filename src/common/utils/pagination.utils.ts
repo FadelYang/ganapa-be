@@ -11,6 +11,7 @@ export interface PaginateOutput<T> {
         lastPage: number
         currentPage: number
         totalPerPage: number
+        searchTerm: string
         prevPage: number | null
         nextPage: number | null
     }
@@ -35,6 +36,7 @@ export const paginateOutput = <T>(
 ): PaginateOutput<T> => {
     const page = Math.abs(parseInt(query.page)) || DEFAULT_PAGE_NUMBER
     const size = Math.abs(parseInt(query.size)) || DEFAULT_PAGE_SIZE
+    const searchTerm = query.search
 
     const lastPage = Math.ceil(total / size)
 
@@ -46,6 +48,7 @@ export const paginateOutput = <T>(
                 lastPage,
                 currentPage: page,
                 totalPerPage: size,
+                searchTerm: searchTerm,
                 prevPage: null,
                 nextPage: null
             }
@@ -64,6 +67,7 @@ export const paginateOutput = <T>(
             total,
             lastPage,
             currentPage: page,
+            searchTerm: searchTerm,
             totalPerPage: size,
             prevPage: page > 1 ? page - 1 : null,
             nextPage: page < lastPage ? + 1 : null

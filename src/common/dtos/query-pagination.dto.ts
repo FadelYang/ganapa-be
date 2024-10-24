@@ -1,4 +1,4 @@
-import { IsNumberString, IsOptional } from "class-validator"
+import { IsNumberString, IsOptional, IsString } from "class-validator"
 
 export class QueryPaginationDto {
     @IsOptional()
@@ -8,4 +8,8 @@ export class QueryPaginationDto {
     @IsOptional()
     @IsNumberString()
     size?: string
+
+    @IsOptional()
+    @IsString()
+    search?: string
 }
