@@ -12,6 +12,7 @@ import { CartModule } from './modules/carts/carts.module';
 import { RolesGuard } from './common/roles.guard';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { OrderModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { join } from 'path';
     ProductCategoryModule,
     ProductModule,
     CartModule,
+    OrderModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,

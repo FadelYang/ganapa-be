@@ -25,7 +25,14 @@ export class IsMineGuard implements CanActivate {
                     throw new HttpException('Unauthorized access to cart', 403);
                 }
                 return true;
+            case 'orders':
+                const userCartItems = await this.prismaService.cartItem.findMany({
+                    where: { userId: request.user.sub }
+                })
 
+                if (!userCartItems.length) {
+                    throw new HttpException('No items in cart', 403)
+                }
             default:
                 return paramId === request.user.id;
         }
