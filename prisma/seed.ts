@@ -28,7 +28,7 @@ async function main() {
                 description: 'Low budget and high quality laptop',
                 price: 1500000,
                 stock: 100,
-                image: 'https://placehold.co/600x400/png',
+                image: 'png.png',
                 productCategoryId: ElectronicCategory?.id
             },
             {
@@ -36,7 +36,7 @@ async function main() {
                 description: 'Kaos polos nyaman dan aman',
                 price: 150000,
                 stock: 100,
-                image: 'https://placehold.co/600x400/png',
+                image: 'png.png',
                 productCategoryId: clothingCategory?.id
             }
         ],
