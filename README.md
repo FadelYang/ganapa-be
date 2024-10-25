@@ -32,6 +32,16 @@
 $ npm install
 ```
 
+## Run migration
+```bash
+npx prisma migrate dev
+```
+
+## Run seeder
+```bash
+npx ts-node prisma/seed.ts
+```
+
 ## Compile and run the project
 
 ```bash
