@@ -78,6 +78,9 @@ export class ProductService {
             await this.prisma.product.findMany({
                 ...paginate(query),
                 where,
+                include: {
+                    productCategory: true
+                }
             }),
             await this.prisma.product.count({
                 where
